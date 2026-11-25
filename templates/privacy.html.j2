@@ -103,7 +103,7 @@ For the purposes of the EU/UK General Data Protection Regulation (GDPR){% if cou
 {% if has_ads %}
   <li>To show ads, measure ad performance, cap ad frequency and{% if personalized_ads %}, where permitted,{% endif %} {% if personalized_ads %}personalize ads{% else %}keep ads non-personalized{% endif %}. Ads keep the Game free.</li>
 {% endif %}
-  <li>To detect fraud, cheating, invalid ad traffic and abuse, and to keep the Game secure.</li>
+  <li>To detect fraud, cheating{% if has_ads %}, invalid ad traffic{% endif %} and abuse, and to keep the Game secure.</li>
   <li>To respond to your requests and support messages.</li>
   <li>To comply with legal obligations and enforce our terms.</li>
 </ul>
@@ -154,7 +154,7 @@ keep to restore purchases and for accounting and fraud prevention.</p>
 <h2 id="legal">Legal bases for processing (EEA/UK users)</h2>
 <ul>
   <li><strong>Performance of a contract</strong> – to provide the Game{% if has_iap %} and the items you buy{% endif %}.</li>
-  <li><strong>Legitimate interests</strong> – analytics, crash reporting, security, fraud prevention{% if has_ads and not personalized_ads %}, and showing non-personalized ads{% endif %}. You can object at any time (see <a href="#rights">Your rights and choices</a>).</li>
+  <li><strong>Legitimate interests</strong> – {% if uses_analytics %}analytics, crash reporting, {% endif %}security{% if sdk_list %}, fraud prevention{% endif %}{% if has_ads and not personalized_ads %}, and showing non-personalized ads{% endif %}. You can object at any time (see <a href="#rights">Your rights and choices</a>).</li>
 {% if has_ads and personalized_ads %}
   <li><strong>Consent</strong> – personalized advertising and the related use of device identifiers. You can withdraw consent at any time.</li>
 {% endif %}
@@ -164,7 +164,9 @@ keep to restore purchases and for accounting and fraud prevention.</p>
 <h2 id="share">How information is shared</h2>
 <p>We do not sell your personal information for money. Information is shared only:</p>
 <ul>
+{% if sdk_list %}
   <li>with the third-party service providers listed under <a href="#third">Third-party services</a>, for the purposes described there;</li>
+{% endif %}
 {% if has_ads %}
   <li>with advertising partners, so they can show and measure ads;</li>
 {% endif %}
@@ -175,7 +177,7 @@ keep to restore purchases and for accounting and fraud prevention.</p>
 <h2 id="retention">Data retention</h2>
 <p>We keep personal data only as long as needed for the purposes in this Policy. Support emails are kept for up to
 2 years after the conversation ends. Game progress stored on your device stays there until you uninstall the Game or
-clear its data. Data held by third-party services is retained according to their own policies linked above. When data is no longer needed, it is deleted or anonymized.</p>
+clear its data.{% if sdk_list %} Data held by third-party services is retained according to their own policies linked above.{% endif %} When data is no longer needed, it is deleted or anonymized.</p>
 
 <h2 id="rights">Your rights and choices</h2>
 <p>Depending on where you live, you may have the right to access, correct, delete, or receive a copy of your personal
@@ -217,12 +219,14 @@ collect personal information from them. If you believe a child has provided us p
 {% endif %}
 
 <h2 id="security">Security</h2>
-<p>We use reasonable technical and organizational measures to protect information. Data sent between the Game and our
-service providers is encrypted in transit using HTTPS/TLS. No method of transmission or storage is 100% secure.</p>
+<p>We use reasonable technical and organizational measures to protect information.{% if sdk_list %} Data sent between the
+Game and our service providers is encrypted in transit using HTTPS/TLS.{% else %} The Game does not send personal data
+over the network; support emails are handled with providers that use encrypted connections.{% endif %} No method of
+transmission or storage is 100% secure.</p>
 
 <h2 id="transfers">International transfers</h2>
-<p>Our service providers may process data in countries other than yours, including the United States. Where required,
-such transfers are protected by appropriate safeguards such as the European Commission's Standard Contractual Clauses.</p>
+<p>{% if sdk_list %}Our service providers may process data in countries other than yours, including the United States.{% else %}Support emails may be processed by our email provider in countries other than yours.{% endif %} Where required, such transfers are protected by appropriate safeguards such as the European Commission's Standard
+Contractual Clauses.</p>
 
 <h2 id="changes">Changes to this policy</h2>
 <p>We may update this Policy from time to time. The new version will be posted on this page with a new effective date.
