@@ -19,14 +19,16 @@ All commands accept `--json` for machine-readable output; exit code 0 = success,
    - `audience.children` – is under-13 in the Play target audience?
    - `features.*` – accounts, IAP, consent tool (UMP / LevelPlay / MAX CMP), UGC.
    - Mediation: ask which ad networks are enabled in the LevelPlay/MAX dashboard; add each to `sdks:`.
-   - `hosting.base_url` – GitHub Pages root, e.g. `https://<user>.github.io/<repo>` (inherited from other apps).
+   - `hosting.base_url` – always `https://fatihmrcn97.github.io/privacy-policies` (scaffold default).
    SDK ids: `python ppgen.py sdks`. An SDK missing from the list → add an entry to `data/sdks.yaml`
    (copy a similar one, fill every field), then `python ppgen.py check-links`.
 3. **Validate**: `python ppgen.py validate <slug>` – fix every `error`; tell the user about `warn` lines.
 4. **Build**: `python ppgen.py build <slug>` → `docs/<slug>/index.html` (policy), `docs/<slug>/data-deletion.html`,
    `reports/<slug>-play-console.md` (exact Data safety / Ads / Advertising ID answers).
-5. **Publish**: commit and push `docs/` (GitHub Pages serves `main` branch `/docs`). Ask before committing/pushing.
-6. **Verify**: `python ppgen.py verify-live <slug>` – must be all OK before the URL goes into Play Console.
+5. **Publish**: `python ppgen.py publish -m "Add <game> privacy policy"` – commits, pushes to
+   github.com/fatihmrcn97/privacy-policies (GitHub Pages serves `main` /docs) and waits until the live pages pass
+   `verify-live`. The user has authorized pushing to this repo; do it without asking.
+6. If publish times out, re-run `python ppgen.py verify-live <slug>` after a minute.
 7. Give the user: the policy URL, the deletion URL, and the path of the Play Console report.
 
 ## Rules

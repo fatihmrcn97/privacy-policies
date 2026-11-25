@@ -22,8 +22,8 @@ python ppgen.py validate
 # 4) Sayfaları ve Play Console cevaplarını üret
 python ppgen.py build
 
-# 5) GitHub'a push et, sonra canlı URL'yi kontrol et
-python ppgen.py verify-live
+# 5) Commit + push + canlı sayfa kontrolü (tek komut)
+python ppgen.py publish -m "Sand Swipe policy"
 ```
 Unity projesi yoksa: `python ppgen.py new my-game`.
 
@@ -38,11 +38,9 @@ Ajanla kullanım: Claude Code'a "Sand Swipe için privacy policy hazırla" demen
 | `reports/<slug>-play-console.md` | Data safety, Ads, Advertising ID, Target audience için birebir cevaplar ve kontrol listesi |
 | `docs/index.html` | Tüm oyunların listesi |
 
-## GitHub Pages (bir kere)
-1. Bu klasörü bir GitHub reposuna push et (ör. `privacy-policies`). Ücretsiz planda Pages için repo **public** olmalı.
-2. Repo > Settings > Pages > Source: **Deploy from a branch**, Branch: `main`, Folder: **/docs**.
-3. URL `https://<kullanici>.github.io/privacy-policies/` olur; bunu config'teki `hosting.base_url`'a yaz.
-4. Her oyunun URL'si: `https://<kullanici>.github.io/privacy-policies/<slug>/`.
+## Yayın
+Repo: https://github.com/fatihmrcn97/privacy-policies (Pages: `main` dalı, `/docs`).
+Site: https://fatihmrcn97.github.io/privacy-policies/ — her oyun `.../<slug>/` altında.
 
 ## Play'in kabul etmesi için neye dikkat ediliyor
 - Herkese açık, giriş istemeyen, HTTPS, HTML sayfa (PDF/Google Docs değil). `verify-live` bunu kontrol eder.
@@ -65,6 +63,7 @@ Not: 403/429 dönen linkler genelde bot engelidir; tarayıcıda açılıyorsa so
 | `validate [slug]` | Play kurallarına göre kontrol (slug yoksa hepsi) |
 | `build [slug]` | Sayfaları ve raporu üretir |
 | `verify-live [slug]` | Yayındaki URL'leri kontrol eder |
+| `publish [-m mesaj]` | Commit + push + canlı kontrol |
 | `check-links` | SDK linklerini kontrol eder |
 
 > Bu araç hukuki danışmanlık değildir. Üretilen metni gözden geçir; şüphede bir hukukçuya danış.

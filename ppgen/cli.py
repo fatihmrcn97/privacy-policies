@@ -264,6 +264,40 @@ def cmd_verify_live(args):
     return code
 
 
+def cmd_publish(args):
+    """Commit apps/, docs/, reports/, push, then wait until the live pages serve the new build."""
+    import subprocess
+    import time
+
+    def git(*a):
+        return subprocess.run(["git", *a], cwd=model.ROOT, capture_output=True, text=True)
+
+    git("add", "-A")
+    msg = args.message or "Update privacy policies"
+    c = git("commit", "-m", msg)
+    committed = c.returncode == 0
+    p = git("push")
+    if p.returncode != 0:
+        _out(args, {"ok": False, "error": p.stderr}, f"git push failed:\n{p.stderr}")
+        return 1
+    if args.no_wait:
+        _out(args, {"ok": True, "committed": committed}, "pushed (not waiting for Pages)")
+        return 0
+    import contextlib
+    import io
+
+    if not model.list_slugs():
+        _out(args, {"ok": True, "committed": committed}, "pushed; no apps to verify yet")
+        return 0
+    deadline = time.time() + args.timeout
+    while time.time() < deadline:  # GitHub Pages usually redeploys within 1-2 minutes
+        with contextlib.redirect_stdout(io.StringIO()):
+            if cmd_verify_live(argparse.Namespace(slug=None, all=True, json=True)) == 0:
+                break
+        time.sleep(15)
+    return cmd_verify_live(argparse.Namespace(slug=None, all=True, json=args.json))
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="ppgen", description="Google Play privacy policy generator")
     p.add_argument("--json", action="store_true", help="machine-readable output")
@@ -292,6 +326,12 @@ def main(argv=None):
         s.set_defaults(fn=fn)
 
     sub.add_parser("check-links", help="check every SDK URL in data/sdks.yaml").set_defaults(fn=cmd_check_links)
+
+    s = sub.add_parser("publish", help="git commit + push, then wait until the live pages are up to date")
+    s.add_argument("-m", "--message", help="commit message")
+    s.add_argument("--timeout", type=int, default=300, help="seconds to wait for GitHub Pages (default 300)")
+    s.add_argument("--no-wait", action="store_true")
+    s.set_defaults(fn=cmd_publish)
 
     argv = list(sys.argv[1:] if argv is None else argv)
     want_json = "--json" in argv  # accept --json anywhere, not only before the subcommand
