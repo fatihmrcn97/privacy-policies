@@ -1,0 +1,63 @@
+# Privacy policy config for one game. File name = URL path: docs/{{ slug }}/
+# After editing:  python ppgen.py validate {{ slug }}   then   python ppgen.py build {{ slug }}
+
+app:
+  name: {{ name | tojson }}                    # exactly as on the Play Store listing
+  package: {{ package | tojson }}              # Android applicationId
+  store_url:                           # optional, https://play.google.com/store/apps/details?id=...
+
+developer:
+  name: {{ developer | tojson }}               # same developer/company name as in Play Console
+  type: company                        # company | individual
+  email: help@waow.games               # default privacy contact for all games
+  website:                             # optional
+  address:                             # optional postal address (recommended for GDPR)
+  country: TR                          # ISO code; TR adds a KVKK section
+
+policy:
+  effective_date: {{ today }}          # update whenever the policy content changes
+
+audience:
+  children: false                      # true if under-13s are in your Play "Target audience"
+  age_gate: false                      # true if a neutral age screen disables personalized ads for children
+
+features:
+  personalized_ads: true               # false = contextual/non-personalized ads only
+  consent_tool: Google UMP             # CMP shown to EEA/UK users; empty if no ads
+  in_app_purchases: false              # also implied by the google_play_billing SDK
+  accounts: false                      # players can create/sign in to an account
+  account_deletion_in_app: false
+  cloud_save: false
+  user_generated_content: false        # chat, names, levels players publish
+  push_notifications: false
+
+# Data YOUR OWN servers/code collect (not SDKs). Leave [] if none.
+# type: {{ "approx_location precise_location name email user_ids purchase_history app_interactions user_content installed_apps crash_logs diagnostics other_performance device_ids" }}
+# purposes: app_functionality analytics developer_communications advertising fraud_prevention personalization account_management
+{% if own_data %}
+own_data:
+{% for d in own_data %}
+  - type: {{ d.type }}
+    purposes: [{{ d.purposes | join(', ') }}]
+    optional: true
+    shared: false
+    reason: {{ d.reason | tojson }}
+{% endfor %}
+{% else %}
+own_data: []
+{% endif %}
+
+# Third-party SDKs in the build (run `python ppgen.py sdks` for the list). Include mediation adapters.
+{% if sdks %}
+sdks:
+{% for s in sdks %}
+  - {{ s }}
+{% endfor %}
+{% else %}
+sdks: []
+{% endif %}
+# available: {% for k in all_sdks %}{{ k }}{% if not loop.last %}, {% endif %}{% endfor %}
+
+
+hosting:
+  base_url: {{ base_url or "https://TODO-github-user.github.io/privacy-policies" }}   # GitHub Pages root, no trailing slash

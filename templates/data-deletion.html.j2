@@ -1,0 +1,68 @@
+{% set dev = developer.name %}
+{% set game = app.name %}
+{% set subject = "Delete my data - " ~ game %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Deletion – {{ game }}</title>
+<meta name="description" content="How to request deletion of your data in {{ game }} by {{ dev }}.">
+{% include "_style.html.j2" %}
+</head>
+<body>
+<main>
+<h1>Data deletion request</h1>
+<p class="meta"><strong>{{ game }}</strong> by {{ dev }} · <a href="./">Privacy Policy</a></p>
+
+<p>You can ask {{ dev }} to delete the data associated with your use of <strong>{{ game }}</strong> at any time.
+You do not need to uninstall the game{% if f.accounts %} or delete your account{% endif %} to make this request.</p>
+
+<h2>How to request deletion</h2>
+<ol>
+{% if f.accounts and f.account_deletion_in_app %}
+  <li><strong>In the game:</strong> open <em>Settings &gt; Account &gt; Delete account</em> and confirm. Your account and its data are deleted.</li>
+  <li><strong>Without the game:</strong> follow the email steps below.</li>
+</ol>
+<ol start="3">
+{% endif %}
+  <li>Send an email to <a href="mailto:{{ developer.email }}?subject={{ subject | urlencode }}">{{ developer.email }}</a> with the subject <strong>"{{ subject }}"</strong>.</li>
+  <li>If the game shows a player ID in its settings, include it{% if f.accounts %}, or the email/account you signed in with{% endif %}, so we can find your data. Without an identifier we can only delete data linked to the email address you write from.</li>
+  <li>We confirm your request by email and complete the deletion within <strong>30 days</strong>.</li>
+</ol>
+
+<h2>What is deleted</h2>
+<ul>
+{% if f.accounts %}
+  <li>Your account, profile and saved progress on our servers.</li>
+{% endif %}
+{% if f.cloud_save %}
+  <li>Your cloud save data.</li>
+{% endif %}
+{% if f.user_generated_content %}
+  <li>Content you published in the game.</li>
+{% endif %}
+  <li>Support conversations and any other personal data we hold about you.</li>
+{% set partners = sdk_list | rejectattr("category", "in", ["payments", "platform"]) | list %}
+{% if partners %}
+  <li>We ask our analytics and advertising partners ({{ partners | map(attribute="name") | join(", ") }}) to delete data linked to your device identifiers, using their deletion tools.</li>
+{% endif %}
+  <li>Game progress stored only on your device is deleted when you uninstall the game or clear its data in Android settings.</li>
+</ul>
+
+<h2>What may be kept</h2>
+<ul>
+{% if has_iap %}
+  <li>Records of in-app purchases (item, price, date and order ID) are kept for up to 10 years where tax and accounting laws require it.</li>
+{% endif %}
+  <li>Aggregated or anonymized statistics that can no longer identify you.</li>
+  <li>Data we must keep to comply with a legal obligation or resolve a dispute, only for as long as required.</li>
+</ul>
+{% if has_ads %}
+<p>You can also delete or reset your Advertising ID at any time in <em>Settings &gt; Google &gt; Ads</em>. This stops apps from linking future ad data to your previous ID.</p>
+{% endif %}
+
+<footer>{{ dev }} · <a href="mailto:{{ developer.email }}">{{ developer.email }}</a></footer>
+</main>
+</body>
+</html>

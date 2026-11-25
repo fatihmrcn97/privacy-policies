@@ -1,0 +1,239 @@
+{% set dev = developer.name %}
+{% set game = app.name %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy – {{ game }}</title>
+<meta name="description" content="Privacy Policy for the {{ game }} mobile game by {{ dev }}.">
+<meta name="robots" content="index,follow">
+{% include "_style.html.j2" %}
+</head>
+<body>
+<main>
+<h1>Privacy Policy</h1>
+<p class="meta"><strong>{{ game }}</strong> (Android package <code>{{ app.package }}</code>) by {{ dev }}<br>
+Effective date: {{ effective_date_text }}</p>
+
+<p>This Privacy Policy explains how {{ dev }} ("we", "us", "our") collects, uses and shares information when you play
+<strong>{{ game }}</strong> (the "Game"). It applies to the Game as distributed on Google Play. By installing or using the
+Game you acknowledge this Policy. If you do not agree, please do not use the Game.</p>
+
+<div class="box">
+<strong>Summary</strong>
+<ul>
+{% if collects_anything %}
+  <li>The Game{% if sdk_list %} and the third-party services built into it{% endif %} collect{% if not sdk_list %}s{% endif %} limited data: {% for r in data_rows %}{{ r.label | lower }}{% if not loop.last %}, {% endif %}{% endfor %}.</li>
+{% else %}
+  <li>The Game does not collect or share any personal data.</li>
+{% endif %}
+{% if has_ads %}
+  <li>The Game shows ads. Ad partners use device identifiers such as the Advertising ID{% if personalized_ads %} and may personalize ads where you have consented or where the law allows{% else %} to deliver non-personalized (contextual) ads{% endif %}.</li>
+{% endif %}
+  <li>We do not sell your personal information for money{% if has_ads and personalized_ads %}; sharing for targeted advertising is described under <a href="#us">US state privacy rights</a>{% endif %}.</li>
+  <li>You can ask us to delete your data at any time: <a href="data-deletion.html">Data deletion request</a> or <a href="mailto:{{ developer.email }}">{{ developer.email }}</a>.</li>
+</ul>
+</div>
+
+<nav aria-label="Contents"><ol>
+<li><a href="#who">Who we are</a></li>
+<li><a href="#collect">Information we collect</a></li>
+<li><a href="#use">How we use information</a></li>
+<li><a href="#third">Third-party services</a></li>
+{% if has_ads %}<li><a href="#ads">Advertising</a></li>{% endif %}
+{% if has_iap %}<li><a href="#iap">In-app purchases</a></li>{% endif %}
+<li><a href="#legal">Legal bases (EEA/UK)</a></li>
+<li><a href="#share">How information is shared</a></li>
+<li><a href="#retention">Data retention</a></li>
+<li><a href="#rights">Your rights and choices</a></li>
+<li><a href="#delete">Deleting your data</a></li>
+<li><a href="#us">US state privacy rights</a></li>
+<li><a href="#children">Children's privacy</a></li>
+<li><a href="#security">Security</a></li>
+<li><a href="#transfers">International transfers</a></li>
+<li><a href="#changes">Changes to this policy</a></li>
+<li><a href="#contact">Contact us</a></li>
+</ol></nav>
+
+<h2 id="who">Who we are</h2>
+<p>The Game is published by <strong>{{ dev }}</strong>{% if developer.address %}, {{ developer.address }}{% endif %}{% if developer.website %} (<a href="{{ developer.website }}">{{ developer.website }}</a>){% endif %}.
+For the purposes of the EU/UK General Data Protection Regulation (GDPR){% if country == "TR" %} and the Turkish Personal Data Protection Law No. 6698 (KVKK){% endif %},
+{{ dev }} is the data controller for personal data processed through the Game. Contact: <a href="mailto:{{ developer.email }}">{{ developer.email }}</a>.</p>
+
+<h2 id="collect">Information we collect</h2>
+<h3>Information you give us</h3>
+<ul>
+  <li><strong>Support messages.</strong> If you email us, we receive your email address and whatever you include in the message. We use it only to answer you.</li>
+{% if f.accounts %}
+  <li><strong>Account information.</strong> If you create or sign in to an account, we process your account identifier{% if "play_games" in sdks %} and the Google Play Games profile name{% endif %} to save your progress and let you sign in on other devices.</li>
+{% endif %}
+{% if f.user_generated_content %}
+  <li><strong>Content you create.</strong> Names, messages or levels you publish in the Game are visible to other players and stored on our servers.</li>
+{% endif %}
+{% for d in own_data or [] %}
+  <li><strong>{{ d.type | replace("_", " ") | capitalize }}.</strong> {{ d.reason }}</li>
+{% endfor %}
+</ul>
+{% if not f.accounts %}
+<p>The Game does not require you to create an account, and we do not ask for your name, email address or phone number in the Game.</p>
+{% endif %}
+
+<h3>Information collected automatically</h3>
+{% if data_rows %}
+<p>When you play, the Game and the third-party services listed under <a href="#third">Third-party services</a> automatically collect the following:</p>
+<div class="tbl"><table>
+<thead><tr><th>Data</th><th>Purpose</th><th>Collected by</th></tr></thead>
+<tbody>
+{% for r in data_rows %}
+<tr><td><strong>{{ r.label }}</strong><br>{{ r.desc }}</td><td>{{ r.purpose_labels | join(", ") }}</td><td>{{ r.sources | join(", ") }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p>We do not collect precise GPS location{% if "precise_location" in data_rows | map(attribute="id") | list %} except as described above{% endif %}, contacts, photos, files, or microphone or camera data{% if f.user_generated_content %}, other than content you choose to publish{% endif %}.</p>
+{% else %}
+<p>The Game does not automatically collect personal data. Game progress and settings are stored only on your device.</p>
+{% endif %}
+
+<h2 id="use">How we use information</h2>
+<ul>
+  <li>To provide and run the Game, save your progress and settings{% if has_iap %}, and deliver items you purchase{% endif %}.</li>
+{% if uses_analytics %}
+  <li>To understand how the Game is played, measure performance, find and fix bugs and crashes, and improve levels and features (analytics).</li>
+{% endif %}
+{% if has_ads %}
+  <li>To show ads, measure ad performance, cap ad frequency and{% if personalized_ads %}, where permitted,{% endif %} {% if personalized_ads %}personalize ads{% else %}keep ads non-personalized{% endif %}. Ads keep the Game free.</li>
+{% endif %}
+  <li>To detect fraud, cheating, invalid ad traffic and abuse, and to keep the Game secure.</li>
+  <li>To respond to your requests and support messages.</li>
+  <li>To comply with legal obligations and enforce our terms.</li>
+</ul>
+
+<h2 id="third">Third-party services</h2>
+{% if sdk_list %}
+<p>The Game uses the following third-party services. Each collects information directly from your device under its own privacy policy, which we encourage you to read:</p>
+<div class="tbl"><table>
+<thead><tr><th>Service</th><th>Provider</th><th>Used for</th><th>Privacy policy</th></tr></thead>
+<tbody>
+{% for s in sdk_list %}
+<tr><td>{{ s.name }}</td><td>{{ s.company }}</td><td>{{ s.category | replace("mediation", "advertising (mediation)") | replace("crash", "crash reporting") | replace("payments", "in-app purchases") | replace("platform", "sign-in, achievements") | capitalize }}</td><td><a href="{{ s.privacy_url }}" rel="noopener">{{ s.privacy_url }}</a>{% if s.partner_url %}<br><a href="{{ s.partner_url }}" rel="noopener">How Google uses data from partner apps</a>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% if ad_sdks | selectattr("category", "equalto", "mediation") | list %}
+<p>Our ad mediation platform may request ads from additional ad networks on our behalf. Those networks receive the data
+described under <a href="#ads">Advertising</a> and process it under their own privacy policies.</p>
+{% endif %}
+{% else %}
+<p>The Game does not include third-party analytics or advertising services.</p>
+{% endif %}
+
+{% if has_ads %}
+<h2 id="ads">Advertising</h2>
+<p>The Game is free to play and supported by ads served by the partners listed above. To deliver ads, ad partners collect
+your device's Advertising ID (or app set ID), IP address (used to estimate your approximate location such as country
+and city), device model, operating system, language, and how you interact with ads.</p>
+{% if personalized_ads %}
+<p><strong>Personalized ads.</strong> Where required by law (for example in the EEA, the UK and Switzerland) we ask for your
+consent{% if f.consent_tool %} through a consent message ({{ f.consent_tool }}){% endif %} before ads are personalized. If you
+do not consent, you will still see ads, but they will be non-personalized. You can change your choice at any time
+{% if f.consent_tool %}from the privacy option in the Game's settings{% else %}by contacting us{% endif %}.</p>
+{% else %}
+<p><strong>Non-personalized ads.</strong> We configure our ad partners to show only non-personalized (contextual) ads in the Game.</p>
+{% endif %}
+<p><strong>Opting out.</strong> On Android you can delete or reset your Advertising ID at any time in
+<em>Settings &gt; Google &gt; Ads</em> (or <em>Settings &gt; Privacy &gt; Ads</em>). After you delete it, apps can no longer
+use it to show you personalized ads.</p>
+{% endif %}
+
+{% if has_iap %}
+<h2 id="iap">In-app purchases</h2>
+<p>Purchases are processed by Google Play. We never receive your card or bank details. Google shares with us the
+information needed to deliver your item and confirm the purchase (a purchase token, the item, price and time), which we
+keep to restore purchases and for accounting and fraud prevention.</p>
+{% endif %}
+
+<h2 id="legal">Legal bases for processing (EEA/UK users)</h2>
+<ul>
+  <li><strong>Performance of a contract</strong> – to provide the Game{% if has_iap %} and the items you buy{% endif %}.</li>
+  <li><strong>Legitimate interests</strong> – analytics, crash reporting, security, fraud prevention{% if has_ads and not personalized_ads %}, and showing non-personalized ads{% endif %}. You can object at any time (see <a href="#rights">Your rights and choices</a>).</li>
+{% if has_ads and personalized_ads %}
+  <li><strong>Consent</strong> – personalized advertising and the related use of device identifiers. You can withdraw consent at any time.</li>
+{% endif %}
+  <li><strong>Legal obligation</strong> – where the law requires us to keep or disclose data.</li>
+</ul>
+
+<h2 id="share">How information is shared</h2>
+<p>We do not sell your personal information for money. Information is shared only:</p>
+<ul>
+  <li>with the third-party service providers listed under <a href="#third">Third-party services</a>, for the purposes described there;</li>
+{% if has_ads %}
+  <li>with advertising partners, so they can show and measure ads;</li>
+{% endif %}
+  <li>if required by law, court order or to protect the rights, property or safety of {{ dev }}, our players or others;</li>
+  <li>in connection with a merger, acquisition or sale of assets, in which case this Policy continues to apply.</li>
+</ul>
+
+<h2 id="retention">Data retention</h2>
+<p>We keep personal data only as long as needed for the purposes in this Policy. Support emails are kept for up to
+2 years after the conversation ends. Game progress stored on your device stays there until you uninstall the Game or
+clear its data. Data held by third-party services is retained according to their own policies linked above. When data is no longer needed, it is deleted or anonymized.</p>
+
+<h2 id="rights">Your rights and choices</h2>
+<p>Depending on where you live, you may have the right to access, correct, delete, or receive a copy of your personal
+data, to restrict or object to processing, and to withdraw consent at any time without affecting earlier processing.
+To exercise these rights email <a href="mailto:{{ developer.email }}">{{ developer.email }}</a>. We will reply within
+30 days. You also have the right to complain to your local data protection authority.</p>
+{% if country == "TR" %}
+<p><strong>Turkey (KVKK).</strong> Under Article 11 of Law No. 6698 you may learn whether your data is processed, request
+information about it, learn the purpose of processing, know the third parties to whom it is transferred in Turkey or
+abroad, request correction or deletion, object to results arising from automated analysis, and claim compensation for
+damages. Send requests to {{ developer.email }}; you may also apply to the Personal Data Protection Authority (KVKK).</p>
+{% endif %}
+
+<h2 id="delete">Deleting your data</h2>
+<p>You can request deletion of the data associated with the Game at any time, without uninstalling it, by following the
+steps on our <a href="data-deletion.html">data deletion page</a> or by emailing <a href="mailto:{{ developer.email }}">{{ developer.email }}</a>
+with the subject "Delete my data – {{ game }}". Uninstalling the Game removes the progress stored on your device.</p>
+
+<h2 id="us">US state privacy rights (including California)</h2>
+<p>Residents of California and other US states with privacy laws have the right to know what personal information we
+collect, to delete and correct it, and to opt out of the "sale" or "sharing" of personal information for cross-context
+behavioral advertising. We do not sell personal information for money.
+{% if has_ads and personalized_ads %}Our use of advertising partners for personalized ads may be considered "sharing" under California law.
+You can opt out by deleting your Advertising ID (see <a href="#ads">Advertising</a>) or by emailing us; we also honor Global Privacy Control signals where they apply.{% endif %}
+We will not discriminate against you for exercising these rights.</p>
+
+<h2 id="children">Children's privacy</h2>
+{% if children %}
+<p>The Game may be played by children. We comply with the Children's Online Privacy Protection Act (COPPA), the GDPR's
+rules for children, and Google Play's Families Policy. For users under 13 (or the age of digital consent in their country)
+we do not knowingly collect personal information beyond what is permitted to support the internal operations of the Game{% if has_ads %},
+we serve only non-personalized ads through Google Play Families self-certified ad SDKs{% endif %}, and we do not
+use the Advertising ID for behavioral advertising. Parents can contact us at {{ developer.email }} to review or delete
+their child's information.</p>
+{% else %}
+<p>The Game is not directed to children under 13 (or the minimum age required in your country), and we do not knowingly
+collect personal information from them. If you believe a child has provided us personal information, contact us at
+{{ developer.email }} and we will delete it.</p>
+{% endif %}
+
+<h2 id="security">Security</h2>
+<p>We use reasonable technical and organizational measures to protect information. Data sent between the Game and our
+service providers is encrypted in transit using HTTPS/TLS. No method of transmission or storage is 100% secure.</p>
+
+<h2 id="transfers">International transfers</h2>
+<p>Our service providers may process data in countries other than yours, including the United States. Where required,
+such transfers are protected by appropriate safeguards such as the European Commission's Standard Contractual Clauses.</p>
+
+<h2 id="changes">Changes to this policy</h2>
+<p>We may update this Policy from time to time. The new version will be posted on this page with a new effective date.
+If the changes are significant, we will notify you in the Game.</p>
+
+<h2 id="contact">Contact us</h2>
+<p>{{ dev }}<br>
+{% if developer.address %}{{ developer.address }}<br>{% endif %}
+Email: <a href="mailto:{{ developer.email }}">{{ developer.email }}</a>{% if developer.website %}<br>Website: <a href="{{ developer.website }}">{{ developer.website }}</a>{% endif %}</p>
+
+<footer>{{ game }} · Privacy Policy · Effective {{ effective_date_text }}{% if app.store_url %} · <a href="{{ app.store_url }}">Google Play</a>{% endif %}</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policies</title>
+{% include "_style.html.j2" %}
+</head>
+<body>
+<main>
+<h1>Privacy Policies</h1>
+<p class="meta">Privacy policies for our mobile games.</p>
+{% if apps %}
+<ul>
+{% for a in apps %}
+  <li><a href="{{ a.slug }}/">{{ a.app_name }}</a> – {{ a.developer }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No policies published yet.</p>
+{% endif %}
+</main>
+</body>
+</html>

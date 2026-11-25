@@ -1,0 +1,359 @@
+# Third-party SDK library used by ppgen.
+#
+# Each key is the SDK id you list under `sdks:` in apps/<slug>.yaml.
+# To add an SDK, copy an entry and fill every field. Run `python ppgen.py check-links`
+# afterwards to make sure the URLs still resolve.
+#
+# Fields
+#   name / company      Shown in the policy.
+#   category            advertising | mediation | analytics | attribution | crash | payments | platform | social
+#   privacy_url         The provider's own privacy policy (linked from the policy).
+#   data_safety_url     The provider's Google Play "Data safety" disclosure guide, if one exists (used in the report).
+#   families_listed     true  = known to appear on Google's Families Self-Certified Ads SDK list (still re-check).
+#                       false/unknown = not confirmed; ppgen warns when the app targets children.
+#   collects            Data type ids (see ppgen/model.py DATA_TYPES).
+#   shared              true when Google Play counts the transfer as "sharing" (ad networks, attribution).
+#                       false when the provider acts as a service provider for you (analytics, crash reporting).
+#   purposes            Purpose ids (see ppgen/model.py PURPOSES).
+#   uses_ad_id          true when the SDK reads the Android Advertising ID (needs the AD_ID permission declaration).
+#   detect              How `ppgen detect` finds it in a Unity project:
+#                         packages  -> keys in Packages/manifest.json
+#                         paths     -> folders under the project root
+#                         patterns  -> regexes searched in *Dependencies.xml, *.gradle and AndroidManifest files
+
+admob:
+  name: Google AdMob
+  company: Google LLC
+  category: advertising
+  privacy_url: https://policies.google.com/privacy
+  partner_url: https://policies.google.com/technologies/partner-sites
+  data_safety_url: https://developers.google.com/admob/android/privacy/play-data-disclosure
+  families_listed: true
+  collects: [approx_location, device_ids, app_interactions, diagnostics, crash_logs]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: [com.google.ads.mobile]
+    paths: [Assets/GoogleMobileAds]
+    patterns: ['play-services-ads(?!-identifier)', 'admobadapter', 'googleadapter', 'mediation\.google']
+
+unity_ads:
+  name: Unity Ads
+  company: Unity Technologies
+  category: advertising
+  privacy_url: https://unity.com/legal/game-player-and-app-user-privacy-policy
+  data_safety_url: https://docs.unity.com/en-us/grow/ads/privacy/google-data-safety
+  families_listed: true
+  collects: [approx_location, device_ids, app_interactions, purchase_history, diagnostics, other_performance]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: [com.unity.ads]
+    paths: []
+    patterns: ['com\.unity3d\.ads:unity-ads', 'unityadsadapter', 'mediation\.unityads']
+
+levelplay:
+  name: Unity LevelPlay (ironSource) mediation
+  company: Unity Technologies / ironSource Ltd.
+  category: mediation
+  privacy_url: https://developers.is.com/ironsource-mobile/general/ironsource-mobile-privacy-policy/
+  data_safety_url: https://developers.is.com/ironsource-mobile/android/google-play-data-safety/
+  families_listed: true
+  collects: [approx_location, device_ids, app_interactions, diagnostics, crash_logs]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: [com.unity.services.levelplay]
+    paths: [Assets/IronSource, Assets/LevelPlay]
+    patterns: ['com\.ironsource\.sdk:mediationsdk', 'unity3d\.ads-mediation:mediation-sdk']
+
+applovin:
+  name: AppLovin MAX
+  company: AppLovin Corporation
+  category: mediation
+  privacy_url: https://www.applovin.com/privacy/
+  data_safety_url: null
+  families_listed: true
+  collects: [approx_location, device_ids, app_interactions, diagnostics, crash_logs]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: [com.applovin.mediation.ads]
+    paths: [Assets/MaxSdk]
+    patterns: ['com\.applovin:applovin-sdk', 'applovinadapter']
+
+meta_audience_network:
+  name: Meta Audience Network
+  company: Meta Platforms, Inc.
+  category: advertising
+  privacy_url: https://www.facebook.com/privacy/policy/
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['audience-network-sdk', 'facebookadapter', 'metaadapter']
+
+mintegral:
+  name: Mintegral
+  company: Mintegral International Ltd.
+  category: advertising
+  privacy_url: https://www.mintegral.com/en/privacy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['mbridge', 'mintegral']
+
+pangle:
+  name: Pangle
+  company: Bytedance Pte. Ltd.
+  category: advertising
+  privacy_url: https://www.pangleglobal.com/privacy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['pangle', 'com\.bytedance']
+
+liftoff:
+  name: Liftoff Monetize (Vungle)
+  company: Liftoff Mobile, Inc.
+  category: advertising
+  privacy_url: https://liftoff.io/privacy-policy/
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['vungle', 'liftoff']
+
+inmobi:
+  name: InMobi
+  company: InMobi Pte. Ltd.
+  category: advertising
+  privacy_url: https://www.inmobi.com/privacy-policy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['inmobi']
+
+chartboost:
+  name: Chartboost
+  company: Chartboost (a LoopMe company)
+  category: advertising
+  privacy_url: https://docs.chartboost.com/en/legal/privacy-policy/
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['chartboost']
+
+dt_exchange:
+  name: Digital Turbine DT Exchange (Fyber)
+  company: Digital Turbine, Inc.
+  category: advertising
+  privacy_url: https://www.digitalturbine.com/privacy-policy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['fyber', 'dtexchange']
+
+moloco:
+  name: Moloco
+  company: Moloco, Inc.
+  category: advertising
+  privacy_url: https://www.moloco.com/privacy-policy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: true
+  purposes: [advertising, analytics, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: []
+    patterns: ['moloco']
+
+firebase_analytics:
+  name: Google Analytics for Firebase
+  company: Google LLC
+  category: analytics
+  privacy_url: https://firebase.google.com/support/privacy
+  data_safety_url: https://firebase.google.com/docs/android/play-data-disclosure
+  families_listed: unknown
+  collects: [device_ids, app_interactions, diagnostics]
+  shared: false
+  purposes: [analytics]
+  uses_ad_id: true
+  detect:
+    packages: [com.google.firebase.analytics]
+    paths: [Assets/Firebase/Plugins/Firebase.Analytics.dll]
+    patterns: ['firebase-analytics']
+
+firebase_crashlytics:
+  name: Firebase Crashlytics
+  company: Google LLC
+  category: crash
+  privacy_url: https://firebase.google.com/support/privacy
+  data_safety_url: https://firebase.google.com/docs/android/play-data-disclosure
+  families_listed: unknown
+  collects: [crash_logs, diagnostics, device_ids]
+  shared: false
+  purposes: [analytics, app_functionality]
+  uses_ad_id: false
+  detect:
+    packages: [com.google.firebase.crashlytics]
+    paths: [Assets/Firebase/Plugins/Firebase.Crashlytics.dll]
+    patterns: ['firebase-crashlytics']
+
+gameanalytics:
+  name: GameAnalytics
+  company: GameAnalytics ApS
+  category: analytics
+  privacy_url: https://www.gameanalytics.com/trust/privacy-notice
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics, crash_logs]
+  shared: false
+  purposes: [analytics]
+  uses_ad_id: true
+  detect:
+    packages: [com.gameanalytics.sdk]
+    paths: [Assets/GameAnalytics]
+    patterns: ['gameanalytics']
+
+unity_analytics:
+  name: Unity Analytics (Unity Gaming Services)
+  company: Unity Technologies
+  category: analytics
+  privacy_url: https://unity.com/legal/game-player-and-app-user-privacy-policy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions, diagnostics]
+  shared: false
+  purposes: [analytics]
+  uses_ad_id: false
+  detect:
+    packages: [com.unity.services.analytics]
+    paths: []
+    patterns: []
+
+adjust:
+  name: Adjust
+  company: Adjust GmbH
+  category: attribution
+  privacy_url: https://www.adjust.com/terms/privacy-policy/
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions]
+  shared: true
+  purposes: [analytics, advertising, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: [com.adjust.sdk]
+    paths: [Assets/Adjust]
+    patterns: ['com\.adjust\.sdk']
+
+appsflyer:
+  name: AppsFlyer
+  company: AppsFlyer Ltd.
+  category: attribution
+  privacy_url: https://www.appsflyer.com/legal/privacy-policy/
+  data_safety_url: null
+  families_listed: unknown
+  collects: [approx_location, device_ids, app_interactions]
+  shared: true
+  purposes: [analytics, advertising, fraud_prevention]
+  uses_ad_id: true
+  detect:
+    packages: [appsflyer-unity-plugin]
+    paths: [Assets/AppsFlyer]
+    patterns: ['af-android-sdk', 'appsflyer']
+
+facebook_sdk:
+  name: Facebook SDK (Meta)
+  company: Meta Platforms, Inc.
+  category: attribution
+  privacy_url: https://www.facebook.com/privacy/policy/
+  data_safety_url: null
+  families_listed: unknown
+  collects: [device_ids, app_interactions, purchase_history]
+  shared: true
+  purposes: [advertising, analytics]
+  uses_ad_id: true
+  detect:
+    packages: []
+    paths: [Assets/FacebookSDK]
+    patterns: ['facebook-core', 'facebook-android-sdk']
+
+google_play_billing:
+  name: Google Play Billing (in-app purchases)
+  company: Google LLC
+  category: payments
+  privacy_url: https://policies.google.com/privacy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [purchase_history]
+  shared: false
+  purposes: [app_functionality]
+  uses_ad_id: false
+  detect:
+    packages: [com.unity.purchasing]
+    paths: []
+    patterns: ['billingclient', 'com\.android\.billingclient']
+
+play_games:
+  name: Google Play Games Services
+  company: Google LLC
+  category: platform
+  privacy_url: https://policies.google.com/privacy
+  data_safety_url: null
+  families_listed: unknown
+  collects: [user_ids, name]
+  shared: false
+  purposes: [app_functionality, account_management]
+  uses_ad_id: false
+  detect:
+    packages: [com.google.play.games]
+    paths: [Assets/GooglePlayGames]
+    patterns: ['play-services-games']

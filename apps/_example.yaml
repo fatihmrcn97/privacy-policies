@@ -1,0 +1,47 @@
+# Reference example (files starting with "_" are ignored by build). Copy to apps/<slug>.yaml.
+
+app:
+  name: "Block Puzzle Example"
+  package: "com.example.blockpuzzle"
+  store_url: https://play.google.com/store/apps/details?id=com.example.blockpuzzle
+
+developer:
+  name: "Example Games"
+  type: company
+  email: privacy@example.com
+  website: https://example.com
+  address: "Example Mah. 1, 34000 Istanbul, Türkiye"
+  country: TR
+
+policy:
+  effective_date: 2026-11-25
+
+audience:
+  children: false
+  age_gate: false
+
+features:
+  personalized_ads: true
+  consent_tool: Google UMP
+  in_app_purchases: true
+  accounts: false
+  account_deletion_in_app: false
+  cloud_save: false
+  user_generated_content: false
+  push_notifications: false
+
+own_data: []
+
+sdks:
+  - levelplay
+  - unity_ads
+  - admob
+  - applovin
+  - mintegral
+  - firebase_analytics
+  - firebase_crashlytics
+  - gameanalytics
+  - google_play_billing
+
+hosting:
+  base_url: https://example.github.io/privacy-policies
