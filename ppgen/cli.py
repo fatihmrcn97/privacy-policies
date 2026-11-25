@@ -246,7 +246,7 @@ def cmd_verify_live(args):
                 if "text/html" not in ctype:
                     c["problems"].append(f"content-type is {ctype!r}, Play wants an HTML page")
                 if label == "policy":
-                    for s in ("Privacy Policy", cfg["app"]["name"], cfg["developer"]["email"]):
+                    for s in ("Privacy Policy", cfg["app"]["name"], cfg["app"]["package"], cfg["developer"]["email"]):
                         if s not in body:
                             c["problems"].append(f"live page does not contain {s!r} (old deploy?)")
                 if not final.startswith("https://"):
