@@ -3,7 +3,7 @@
 
 app:
   name: "Color Blast Jam"                  # exactly as on the Play Store listing
-  package: "com.WaowGames.CritterBlast"              # Android applicationId
+  package: "com.WaowGames.ColorBlastJam"              # Android applicationId
   store_url:                           # optional, https://play.google.com/store/apps/details?id=...
 
 developer:
